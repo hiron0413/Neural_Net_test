@@ -2,34 +2,45 @@ import numpy as np
 import matplotlib.pyplot as plt
 from training import *
 
-net = network(10, 0.0005)
-train_data, test_data = load_data(3000, 200)
+net = network(10, 0.0005, False)
+for k in range(2):
+    train_data, test_data = load_data(3000, 200)
 
-train_loss = [0,0,0]
-test_loss = [0,0,0]
+    train_loss = [0,0,0]
+    test_loss = [0,0,0]
+    train_accuracy = [0,0,0]
+    test_accuracy = [0,0,0]
 
-_, train_loss[0], test_loss[0], n = train(net, 14, train_data, test_data, 200, 100, 0.03, 5)
-_, train_loss[1], test_loss[1], n = train(net, 12, train_data, test_data, 200, 100, 0.03, 5)
-_, train_loss[2], test_loss[2], n = train(net, 10, train_data, test_data, 200, 100, 0.03, 5)
+    train_accuracy[0], test_accuracy[0], train_loss[0], test_loss[0], n = train(net, 14, train_data, test_data, 500, 100, 0.03, 5, True)
+    train_accuracy[1], test_accuracy[1], train_loss[1], test_loss[1], n = train(net, 12, train_data, test_data, 500, 100, 0.03, 5, True)
+    train_accuracy[2], test_accuracy[2], train_loss[2], test_loss[2], n = train(net, 10, train_data, test_data, 500, 100, 0.03, 5, True)
 
-x = np.arange(len(test_loss[0]))
+    x = np.arange(len(test_loss[0]))
 
-plt.ylim(24.0, 25.0)
+    #plt.ylim(24.0, 25.0)
 
-for i in range(3):
-    plt.subplot(1, 3, i + 1)
-    plt.title("{size}x{size}".format(size = 14 - 2 * i))
+    for i in range(2):
+        for j in range(3):
+            plt.subplot(2, 6, 6*k + 3*i + j + 1)
+            plt.title("{size}x{size}".format(size = 14 - 2 * j))
+            if i == 1:
+                p1 = plt.plot(x, train_accuracy[j], linestyle="solid")
+                p2 = plt.plot(x, test_accuracy[j], linestyle="dashed")
+            else:
+                p1 = plt.plot(x, train_loss[j], linestyle="solid")
+                p2 = plt.plot(x, test_loss[j], linestyle="dashed")
+            plt.legend((p1[0], p2[0]), ("train", "test"), loc=2)
 
-    p1 = plt.plot(x, train_loss[i], linestyle="solid")
-    p2 = plt.plot(x, test_loss[i], linestyle="dashed")
-    plt.legend((p1[0], p2[0]), ("train", "test"), loc=2)
+    net = network(10, 0.0005, True)
 
 plt.show()
 
+"""
 for i in range(3):
     size = 14 - 2 * i
     for key in ("W1", "b1", "W2", "b2"):
         np.savetxt(f"layers/{size}x{size}_{key}.csv", net[f"{size}x{size}"].params[key].flatten(), delimiter=',')
+"""
 
 """
 net = network(10, 0.5)

@@ -3,10 +3,12 @@ import numpy as np
 import math
 import random
 
+from sklearn.metrics import accuracy_score
+
 from Layers import *
 
 class NeuralNet1:
-    def __init__(self, w, h, ships: tuple, hidden_size = 100, weight_decay_lambda = 0):
+    def __init__(self, w, h, ships: tuple, hidden_size = 100, weight_decay_lambda = 0, use_sigmoid = True):
         self.width = w
         self.height = h
         self.ships = ships
@@ -25,6 +27,8 @@ class NeuralNet1:
         self.layers["Affine1"] = Affine(self.params["W1"], self.params["b1"])
         self.layers["ReLU1"] = ReLU()
         self.layers["Affine2"] = Affine(self.params["W2"], self.params["b2"])
+        if use_sigmoid:
+            self.layers["Sigmoid1"] = Sigmoid()
 
         self.lastLayer = IdentityWithLoss()
         
@@ -45,6 +49,14 @@ class NeuralNet1:
             x = layer.forward(x)
 
         return x
+
+    def accuracy(self, x, t):
+        out = self.predict(x)
+        out = (out > 0.5).astype(int)
+
+        accuracy = np.count_nonzero((t == out) * (out == 1)) / t.size
+
+        return accuracy
 
     def loss(self, x, t):
         out = self.predict(x)
