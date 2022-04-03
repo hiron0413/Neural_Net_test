@@ -54,7 +54,7 @@ class NeuralNet1:
         out = self.predict(x)
         out = (out > 0.5).astype(int)
 
-        accuracy = np.count_nonzero((t == out) * (out == 1)) / t.size
+        accuracy = np.count_nonzero((t == out) * out) / np.count_nonzero(out)
 
         return accuracy
 

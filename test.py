@@ -11,9 +11,11 @@ for k in range(2):
     train_accuracy = [0,0,0]
     test_accuracy = [0,0,0]
 
-    train_accuracy[0], test_accuracy[0], train_loss[0], test_loss[0], n = train(net, 14, train_data, test_data, 500, 100, 0.03, 5, True)
-    train_accuracy[1], test_accuracy[1], train_loss[1], test_loss[1], n = train(net, 12, train_data, test_data, 500, 100, 0.03, 5, True)
-    train_accuracy[2], test_accuracy[2], train_loss[2], test_loss[2], n = train(net, 10, train_data, test_data, 500, 100, 0.03, 5, True)
+    m = 900 if k == 1 else 100
+
+    train_accuracy[0], test_accuracy[0], train_loss[0], test_loss[0], n = train(net, 14, train_data, test_data, m, 100, 0.03, 5, True)
+    train_accuracy[1], test_accuracy[1], train_loss[1], test_loss[1], n = train(net, 12, train_data, test_data, m, 100, 0.03, 5, True)
+    train_accuracy[2], test_accuracy[2], train_loss[2], test_loss[2], n = train(net, 10, train_data, test_data, m, 100, 0.03, 5, True)
 
     x = np.arange(len(test_loss[0]))
 

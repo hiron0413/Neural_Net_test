@@ -1,4 +1,3 @@
-from msilib.schema import Error
 import numpy as np
 from sklearn.metrics import accuracy_score
 from neural_net_1 import NeuralNet1
